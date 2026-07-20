@@ -1,0 +1,62 @@
+.detalle-container {
+    max-width: 500px;
+    margin: 2rem auto;
+    view-transition-name: page-content;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    padding: 3rem;
+
+    mat-icon {
+        font-size: 2rem;
+        width: 2rem;
+        height: 2rem;
+    }
+}
+
+.detalle-card {
+    border-radius: 16px;
+}
+
+.operation-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 2rem 0;
+    font-size: 1.5rem;
+    flex-wrap: wrap;
+
+    .operand {
+        font-weight: 400;
+        color: var(--mat-sys-on-surface);
+    }
+
+    .operator {
+        color: var(--mat-sys-primary);
+        font-weight: 500;
+        font-size: 1.75rem;
+    }
+
+    .equals {
+        color: var(--mat-sys-on-surface-variant);
+    }
+
+    .result {
+        font-weight: 600;
+        color: var(--mat-sys-primary);
+        font-size: 2rem;
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.spinning {
+    animation: spin 1s linear infinite;
+}
