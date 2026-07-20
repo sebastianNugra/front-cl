@@ -1,0 +1,45 @@
+<div class="calculator-wrapper">
+    <div class="calculator">
+        <!-- Display -->
+        <div class="display">
+            <span class="expression" animate.enter="fade-in-up">{{ displayExpression() }}</span>
+            @if (resultado() !== null) {
+            <span class="result" animate.enter="scale-in">= {{ resultado() }}</span>
+            }
+        </div>
+
+        <!-- Operation selector -->
+        <div class="operations">
+            @for (op of operaciones; track op.tipo) {
+            <button mat-fab [class.selected]="operacionSeleccionada() === op.tipo"
+                (click)="seleccionarOperacion(op.tipo)" [matTooltip]="op.label" color="primary">
+                <mat-icon>{{ op.icon }}</mat-icon>
+            </button>
+            }
+        </div>
+
+        <!-- Number pad -->
+        <div class="numpad">
+            @for (digit of [1, 2, 3, 4, 5, 6, 7, 8, 9]; track digit) {
+            <button mat-raised-button (click)="agregarDigito(digit.toString())">
+                {{ digit }}
+            </button>
+            }
+            <button mat-raised-button (click)="agregarPunto()">.</button>
+            <button mat-raised-button (click)="agregarDigito('0')">0</button>
+            <button mat-stroked-button class="btn-clear" (click)="limpiar()">
+                <mat-icon>backspace</mat-icon>
+            </button>
+        </div>
+
+        <!-- Calculate button -->
+        <button mat-fab extended class="btn-calculate" color="accent" (click)="calcular()" [disabled]="cargando()">
+            @if (cargando()) {
+            <mat-icon class="spinning">sync</mat-icon>
+            } @else {
+            <mat-icon>arrow_forward</mat-icon>
+            }
+            Calcular
+        </button>
+    </div>
+</div>
