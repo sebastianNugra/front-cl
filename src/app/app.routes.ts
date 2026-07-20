@@ -9,7 +9,7 @@ export const routes: Routes = [
     {
         path: 'historial',
         loadComponent: () =>
-            import('./pages/historial/historial/historial').then((m) => m.Historial),
+            import('./pages/historial/historial').then((m) => m.Historial),
     },
     {
         path: 'historial/:id',
