@@ -6,9 +6,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { OperacionService } from '../../../core/services/operacion.service';
-import { HistorialResponse } from '../../../models/operacion.model';
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { OperacionService } from '../../core/services/operacion.service';
+import { HistorialResponse } from '../../models/operacion.model';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 @Component({
     selector: 'app-historial',
