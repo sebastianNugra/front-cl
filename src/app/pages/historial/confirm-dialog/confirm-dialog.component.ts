@@ -3,10 +3,10 @@ import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-    selector: 'app-confirm-dialog',
-    standalone: true,
-    imports: [MatDialogModule, MatButtonModule],
-    template: `
+  selector: 'app-confirm-dialog',
+  standalone: true,
+  imports: [MatDialogModule, MatButtonModule],
+  template: `
     <h2 mat-dialog-title>{{ data.titulo }}</h2>
     <mat-dialog-content>{{ data.mensaje }}</mat-dialog-content>
     <mat-dialog-actions align="end">
@@ -16,5 +16,5 @@ import { MatButtonModule } from '@angular/material/button';
   `,
 })
 export class ConfirmDialogComponent {
-    data = inject(MAT_DIALOG_DATA) as { titulo: string; mensaje: string };
+  data = inject(MAT_DIALOG_DATA) as { titulo: string; mensaje: string };
 }
