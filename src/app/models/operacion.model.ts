@@ -27,3 +27,25 @@ export interface PageResponse<T> {
     number: number;
     size: number;
 }
+
+const OPERADOR_SYMBOLS: Record<TipoOperacion, string> = {
+    SUMA: '+',
+    RESTA: '-',
+    MULTIPLICACION: '×',
+    DIVISION: '÷',
+};
+
+const OPERACION_NAMES: Record<TipoOperacion, string> = {
+    SUMA: 'Suma',
+    RESTA: 'Resta',
+    MULTIPLICACION: 'Multiplicación',
+    DIVISION: 'División',
+};
+
+export function getOperadorSymbol(tipo: string): string {
+    return OPERADOR_SYMBOLS[tipo as TipoOperacion] ?? tipo;
+}
+
+export function getOperacionNombre(tipo: string): string {
+    return OPERACION_NAMES[tipo as TipoOperacion] ?? tipo;
+}
