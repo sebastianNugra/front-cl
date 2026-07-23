@@ -2,9 +2,22 @@
     <div class="calculator">
         <!-- Display -->
         <div class="display">
-            <span class="expression" animate.enter="fade-in-up">{{ displayExpression() }}</span>
+            <div class="expression-row">
+                <input class="operand-input" [value]="valor1()" (input)="onInput('valor1', $event)" placeholder="0"
+                    inputmode="decimal" />
+
+                @if (operacionSeleccionada(); as op) {
+                <span class="operator" animate.enter="fade-in-up">{{ getSymbol(op) }}</span>
+                <input class="operand-input" [value]="valor2()" (input)="onInput('valor2', $event)" placeholder="0"
+                    inputmode="decimal" />
+                }
+            </div>
+
             @if (resultado() !== null) {
-            <span class="result" animate.enter="scale-in">= {{ resultado() }}</span>
+            <div class="result-row" animate.enter="scale-in">
+                <span class="equals">=</span>
+                <span class="result">{{ resultado() }}</span>
+            </div>
             }
         </div>
 
