@@ -6,8 +6,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { OperacionService } from '../../core/services/operacion.service';
 import { HistorialResponse } from '../../models/operacion.model';
+import { getOperadorSymbol, getOperacionNombre } from '../../models/operacion.model';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 @Component({
@@ -30,7 +32,7 @@ export class Historial implements OnInit {
     private readonly dialog = inject(MatDialog);
     private readonly snackBar = inject(MatSnackBar);
 
-    displayedColumns = ['operacion', 'resultado', 'fecha', 'acciones'];
+    displayedColumns = ['operacion', 'tipo', 'resultado', 'fecha', 'acciones'];
     data = signal<HistorialResponse[]>([]);
     totalElements = signal(0);
     pageSize = signal(10);
@@ -70,7 +72,7 @@ export class Historial implements OnInit {
         const dialogRef = this.dialog.open(ConfirmDialogComponent, {
             data: {
                 titulo: 'Eliminar operación',
-                mensaje: `¿Eliminar ${operacion.valor1} ${operacion.tipo} ${operacion.valor2} = ${operacion.resultado}?`,
+                mensaje: `¿Eliminar ${operacion.valor1} ${getOperadorSymbol(operacion.tipo)} ${operacion.valor2} = ${operacion.resultado}?`,
             },
         });
 
@@ -93,13 +95,11 @@ export class Historial implements OnInit {
         });
     }
 
-    getOperacionTexto(op: HistorialResponse): string {
-        const symbols: Record<string, string> = {
-            SUMA: '+',
-            RESTA: '-',
-            MULTIPLICACION: '×',
-            DIVISION: '÷',
-        };
-        return `${op.valor1} ${symbols[op.tipo] || op.tipo} ${op.valor2}`;
+    getSymbol(tipo: string): string {
+        return getOperadorSymbol(tipo);
+    }
+
+    getNombre(tipo: string): string {
+        return getOperacionNombre(tipo);
     }
 }
