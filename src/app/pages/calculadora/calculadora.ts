@@ -56,19 +56,34 @@ export class Calculadora {
         this.operacionSeleccionada.set(tipo);
     }
 
-    agregarDigito(digito: string): void {
-        const target = this.operacionSeleccionada()
-            ? this.valor2
-            : this.valor1;
+    getSymbol(tipo: string): string {
+        return getOperadorSymbol(tipo);
+    }
+    
+    onInput(field: 'valor1' | 'valor2', event: Event): void {
+        const value = (event.target as HTMLInputElement).value;
+        if (field === 'valor1') {
+            this.valor1.set(value);
+        } else {
+            this.valor2.set(value);
+        }
+    }
 
+    agregarDigito(digito: string): void {
+        if (this.resultado() !== null) {
+            this.limpiar();
+        }
+
+        const target = this.operacionSeleccionada() ? this.valor2 : this.valor1;
         target.update((valor) => valor + digito);
     }
 
     agregarPunto(): void {
-        const target = this.operacionSeleccionada()
-            ? this.valor2
-            : this.valor1;
+        if (this.resultado() !== null) {
+            this.limpiar();
+        }
 
+        const target = this.operacionSeleccionada() ? this.valor2 : this.valor1;
         if (!target().includes('.')) {
             target.update((valor) => valor + '.');
         }
