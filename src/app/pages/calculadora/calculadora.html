@@ -12,7 +12,8 @@
         <div class="operations">
             @for (op of operaciones; track op.tipo) {
             <button mat-fab [class.selected]="operacionSeleccionada() === op.tipo"
-                (click)="seleccionarOperacion(op.tipo)" [matTooltip]="op.label" color="primary">
+                [class.flash]="lastKeyPressed() === op.key" (click)="seleccionarOperacion(op.tipo)"
+                [matTooltip]="op.key" [attr.data-op]="op.tipo" color="primary">
                 <mat-icon>{{ op.icon }}</mat-icon>
             </button>
             }
@@ -21,25 +22,41 @@
         <!-- Number pad -->
         <div class="numpad">
             @for (digit of [1, 2, 3, 4, 5, 6, 7, 8, 9]; track digit) {
-            <button mat-raised-button (click)="agregarDigito(digit.toString())">
+            <button mat-raised-button [class.flash]="lastKeyPressed() === digit.toString()"
+                (click)="agregarDigito(digit.toString())">
                 {{ digit }}
             </button>
             }
-            <button mat-raised-button (click)="agregarPunto()">.</button>
-            <button mat-raised-button (click)="agregarDigito('0')">0</button>
-            <button mat-stroked-button class="btn-clear" (click)="limpiar()">
+            <button mat-raised-button [class.flash]="lastKeyPressed() === '.'" (click)="agregarPunto()">
+                .
+            </button>
+            <button mat-raised-button [class.flash]="lastKeyPressed() === '0'" (click)="agregarDigito('0')">
+                0
+            </button>
+            <button mat-stroked-button class="btn-clear" (click)="borrarUltimo()">
                 <mat-icon>backspace</mat-icon>
             </button>
         </div>
 
-        <!-- Calculate button -->
-        <button mat-fab extended class="btn-calculate" color="accent" (click)="calcular()" [disabled]="cargando()">
-            @if (cargando()) {
-            <mat-icon class="spinning">sync</mat-icon>
-            } @else {
-            <mat-icon>arrow_forward</mat-icon>
-            }
-            Calcular
-        </button>
+        <!-- Actions row -->
+        <div class="actions-row">
+            <button mat-stroked-button class="btn-clear-all" (click)="limpiar()">
+                <mat-icon>delete_forever</mat-icon>
+                Limpiar
+            </button>
+            <button mat-fab extended class="btn-calculate" color="accent" (click)="calcular()" [disabled]="cargando()">
+                @if (cargando()) {
+                <mat-icon class="spinning">sync</mat-icon>
+                } @else {
+                <mat-icon>arrow_forward</mat-icon>
+                }
+                Calcular
+            </button>
+        </div>
     </div>
+
+    <p class="keyboard-hint">
+        <mat-icon>keyboard</mat-icon>
+        Usa el teclado: números, + - * /, Enter, Esc
+    </p>
 </div>
