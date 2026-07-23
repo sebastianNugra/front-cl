@@ -15,7 +15,9 @@
     background: var(--mat-sys-surface-container);
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    box-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.06),
+        0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .full-width {
@@ -23,8 +25,47 @@
 }
 
 .resultado {
-    font-weight: 500;
+    font-weight: 600;
     color: var(--mat-sys-primary);
+}
+
+// ─── Tipo badge ───
+.tipo-badge {
+    display: inline-block;
+    padding: 0.2rem 0.625rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: capitalize;
+
+    &[data-tipo='SUMA'] {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+    }
+
+    &[data-tipo='RESTA'] {
+        background-color: #fce4ec;
+        color: #c62828;
+    }
+
+    &[data-tipo='MULTIPLICACION'] {
+        background-color: #e3f2fd;
+        color: #1565c0;
+    }
+
+    &[data-tipo='DIVISION'] {
+        background-color: #fff3e0;
+        color: #e65100;
+    }
+}
+
+// ─── Hover en filas ───
+tr.mat-mdc-row {
+    transition: background-color 0.15s ease;
+
+    &:hover {
+        background-color: var(--mat-sys-surface-container-high);
+    }
 }
 
 @media (max-width: 600px) {
