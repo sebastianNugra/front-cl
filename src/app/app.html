@@ -1,19 +1,19 @@
 <nav class="navbar">
   <a class="navbar-brand" routerLink="/">
-    <mat-icon>calculate</mat-icon>
+    <span class="icon-placeholder">⬡</span>
     <span>Calculadora</span>
   </a>
   <div class="navbar-links">
     <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-      <mat-icon>home</mat-icon>
+      <span class="icon-placeholder">⌂</span>
       <span class="link-text">Inicio</span>
     </a>
     <a routerLink="/historial" routerLinkActive="active">
-      <mat-icon>history</mat-icon>
+      <span class="icon-placeholder">◷</span>
       <span class="link-text">Historial</span>
     </a>
-    <button mat-icon-button (click)="toggleDarkMode()" aria-label="Toggle dark mode">
-      <mat-icon>{{ darkMode() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+    <button class="icon-btn" (click)="toggleDarkMode()" aria-label="Toggle dark mode">
+      <span class="icon-placeholder">{{ darkMode() ? '☀' : '☾' }}</span>
     </button>
   </div>
 </nav>
