@@ -1,56 +1,90 @@
-<div class="historial-container">
-    <h2 class="page-title" animate.enter="fade-in-up">Historial de Operaciones</h2>
+<div class="min-h-screen p-6">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="font-orbitron text-2xl font-bold mb-6 text-white">Historial</h1>
 
-    <div class="table-wrapper" animate.enter="fade-in-up">
-        <table mat-table [dataSource]="data()" class="full-width">
-            <!-- Operación -->
-            <ng-container matColumnDef="operacion">
-                <th mat-header-cell *matHeaderCellDef>Operación</th>
-                <td mat-cell *matCellDef="let row">
-                    {{ row.valor1 }} {{ getSymbol(row.tipo) }} {{ row.valor2 }}
-                </td>
-            </ng-container>
+        @if (cargando()) {
+            <div class="text-center py-12 text-accent-cyan animate-pulse font-mono">Cargando...</div>
+        } @else if (data().length === 0) {
+            <div class="text-center py-12 text-gray-500 font-mono">No hay operaciones registradas</div>
+        } @else {
+            <!-- Tabla -->
+            <div class="bg-gray-900/80 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden">
+                <!-- Header -->
+                <div class="hidden md:grid grid-cols-5 gap-4 px-6 py-3 bg-white/5 border-b border-white/10 text-xs text-gray-400 uppercase font-mono">
+                    <div>Operación</div>
+                    <div>Tipo</div>
+                    <div>Resultado</div>
+                    <div>Fecha</div>
+                    <div class="text-right">Acciones</div>
+                </div>
+                <!-- Rows -->
+                @for (item of data(); track item.id) {
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-2 md:gap-4 px-6 py-4 border-b border-white/5 hover:bg-white/5 transition-colors items-center">
+                        <div class="text-white font-mono">
+                            <span class="md:hidden text-xs text-gray-500 uppercase mr-2">Op:</span>
+                            {{ item.valor1 }} {{ getOperadorSymbol(item.tipo) }} {{ item.valor2 }}
+                        </div>
+                        <div>
+                            <span [class]="'px-2 py-1 rounded-full text-xs font-mono ' + getTipoBadgeClass(item.tipo)">
+                                {{ getOperacionNombre(item.tipo) }}
+                            </span>
+                        </div>
+                        <div class="text-accent-cyan font-orbitron font-bold">
+                            <span class="md:hidden text-xs text-gray-500 uppercase mr-2">=</span>
+                            {{ item.resultado }}
+                        </div>
+                        <div class="text-gray-400 text-sm font-mono">
+                            <span class="md:hidden text-xs text-gray-500 uppercase mr-2">Fecha:</span>
+                            {{ item.fecha }}
+                        </div>
+                        <div class="flex gap-2 md:justify-end">
+                            <button (click)="verDetalle(item.id)"
+                                class="px-3 py-1 text-xs rounded-lg bg-accent-cyan/20 text-accent-cyan hover:bg-accent-cyan/40 transition-colors">
+                                Ver
+                            </button>
+                            <button (click)="confirmarEliminar(item)"
+                                class="px-3 py-1 text-xs rounded-lg bg-red-900/40 text-red-300 hover:bg-red-800/60 transition-colors">
+                                Eliminar
+                            </button>
+                        </div>
+                    </div>
+                }
+            </div>
 
-            <!-- Tipo -->
-            <ng-container matColumnDef="tipo">
-                <th mat-header-cell *matHeaderCellDef>Tipo</th>
-                <td mat-cell *matCellDef="let row">
-                    <span class="tipo-badge" [attr.data-tipo]="row.tipo">
-                        {{ getNombre(row.tipo) }}
-                    </span>
-                </td>
-            </ng-container>
-
-            <!-- Resultado -->
-            <ng-container matColumnDef="resultado">
-                <th mat-header-cell *matHeaderCellDef>Resultado</th>
-                <td mat-cell *matCellDef="let row" class="resultado">{{ row.resultado }}</td>
-            </ng-container>
-
-            <!-- Fecha -->
-            <ng-container matColumnDef="fecha">
-                <th mat-header-cell *matHeaderCellDef>Fecha</th>
-                <td mat-cell *matCellDef="let row">{{ row.fecha }}</td>
-            </ng-container>
-
-            <!-- Acciones -->
-            <ng-container matColumnDef="acciones">
-                <th mat-header-cell *matHeaderCellDef>Acciones</th>
-                <td mat-cell *matCellDef="let row">
-                    <button mat-icon-button (click)="verDetalle(row.id)" matTooltip="Ver detalle">
-                        <mat-icon>visibility</mat-icon>
-                    </button>
-                    <button mat-icon-button color="warn" (click)="confirmarEliminar(row)" matTooltip="Eliminar">
-                        <mat-icon>delete</mat-icon>
-                    </button>
-                </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-        </table>
-
-        <mat-paginator [length]="totalElements()" [pageSize]="pageSize()" [pageIndex]="pageIndex()"
-            [pageSizeOptions]="[5, 10, 25]" (page)="onPageChange($event)" showFirstLastButtons />
+            <!-- Paginador -->
+            <div class="flex items-center justify-between mt-4 text-sm text-gray-400 font-mono">
+                <button (click)="prevPage()" [disabled]="pageIndex() === 0"
+                    class="px-3 py-1 rounded-lg bg-white/5 hover:bg-white/10 disabled:opacity-30 transition-colors cursor-pointer disabled:cursor-not-allowed">
+                    ← Anterior
+                </button>
+                <span>Página {{ pageIndex() + 1 }} de {{ totalPages() }} ({{ totalElements() }} total)</span>
+                <button (click)="nextPage()" [disabled]="pageIndex() >= totalPages() - 1"
+                    class="px-3 py-1 rounded-lg bg-white/5 hover:bg-white/10 disabled:opacity-30 transition-colors cursor-pointer disabled:cursor-not-allowed">
+                    Siguiente →
+                </button>
+            </div>
+        }
     </div>
 </div>
+
+<!-- Modal de confirmación nativo -->
+@if (showConfirmDialog()) {
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+        (click)="cancelDelete()">
+        <div class="bg-gray-900 border border-white/10 rounded-2xl p-6 shadow-2xl max-w-sm w-full mx-4"
+            (click)="$event.stopPropagation()">
+            <h2 class="font-orbitron text-lg font-bold text-white mb-2">Confirmar eliminación</h2>
+            <p class="text-gray-400 font-mono text-sm mb-6">{{ deleteMensaje() }}</p>
+            <div class="flex justify-end gap-3">
+                <button (click)="cancelDelete()"
+                    class="px-4 py-2 rounded-xl bg-white/5 text-gray-300 hover:bg-white/10 transition-colors text-sm cursor-pointer">
+                    Cancelar
+                </button>
+                <button (click)="confirmDelete()"
+                    class="px-4 py-2 rounded-xl bg-red-900/60 text-red-300 hover:bg-red-800/80 transition-colors text-sm cursor-pointer">
+                    Eliminar
+                </button>
+            </div>
+        </div>
+    </div>
+}

@@ -1,43 +1,31 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { OperacionService } from '../../core/services/operacion.service';
-import { HistorialResponse } from '../../models/operacion.model';
-import { getOperadorSymbol, getOperacionNombre } from '../../models/operacion.model';
-import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { HistorialResponse, getOperadorSymbol, getOperacionNombre } from '../../models/operacion.model';
 
 @Component({
     selector: 'app-historial',
     standalone: true,
-    imports: [
-        MatTableModule,
-        MatPaginatorModule,
-        MatButtonModule,
-        MatIconModule,
-        MatDialogModule,
-        MatSnackBarModule,
-    ],
     templateUrl: './historial.html',
     styleUrl: './historial.scss',
 })
 export class Historial implements OnInit {
     private readonly operacionService = inject(OperacionService);
     private readonly router = inject(Router);
-    private readonly dialog = inject(MatDialog);
-    private readonly snackBar = inject(MatSnackBar);
 
-    displayedColumns = ['operacion', 'tipo', 'resultado', 'fecha', 'acciones'];
     data = signal<HistorialResponse[]>([]);
     totalElements = signal(0);
+    totalPages = signal(0);
     pageSize = signal(10);
     pageIndex = signal(0);
     cargando = signal(false);
+
+    showConfirmDialog = signal(false);
+    selectedId = signal<number | null>(null);
+    deleteMensaje = signal('');
+
+    getOperadorSymbol = getOperadorSymbol;
+    getOperacionNombre = getOperacionNombre;
 
     ngOnInit(): void {
         this.cargarHistorial();
@@ -49,19 +37,27 @@ export class Historial implements OnInit {
             next: (res) => {
                 this.data.set(res.content);
                 this.totalElements.set(res.totalElements);
+                this.totalPages.set(res.totalPages);
                 this.cargando.set(false);
             },
             error: () => {
-                this.snackBar.open('Error al cargar historial', 'Cerrar', { duration: 3000 });
                 this.cargando.set(false);
             },
         });
     }
 
-    onPageChange(event: PageEvent): void {
-        this.pageIndex.set(event.pageIndex);
-        this.pageSize.set(event.pageSize);
-        this.cargarHistorial();
+    nextPage(): void {
+        if (this.pageIndex() < this.totalPages() - 1) {
+            this.pageIndex.update((i) => i + 1);
+            this.cargarHistorial();
+        }
+    }
+
+    prevPage(): void {
+        if (this.pageIndex() > 0) {
+            this.pageIndex.update((i) => i - 1);
+            this.cargarHistorial();
+        }
     }
 
     verDetalle(id: number): void {
@@ -69,37 +65,41 @@ export class Historial implements OnInit {
     }
 
     confirmarEliminar(operacion: HistorialResponse): void {
-        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-            data: {
-                titulo: 'Eliminar operación',
-                mensaje: `¿Eliminar ${operacion.valor1} ${getOperadorSymbol(operacion.tipo)} ${operacion.valor2} = ${operacion.resultado}?`,
-            },
-        });
-
-        dialogRef.afterClosed().subscribe((confirmado) => {
-            if (confirmado) {
-                this.eliminar(operacion.id);
-            }
-        });
+        this.selectedId.set(operacion.id);
+        this.deleteMensaje.set(
+            `¿Eliminar ${operacion.valor1} ${getOperadorSymbol(operacion.tipo)} ${operacion.valor2} = ${operacion.resultado}?`
+        );
+        this.showConfirmDialog.set(true);
     }
 
-    private eliminar(id: number): void {
+    confirmDelete(): void {
+        const id = this.selectedId();
+        if (id === null) return;
+
+        this.showConfirmDialog.set(false);
         this.operacionService.eliminarOperacion(id).subscribe({
             next: () => {
-                this.snackBar.open('Operación eliminada', 'Cerrar', { duration: 2000 });
+                this.selectedId.set(null);
                 this.cargarHistorial();
             },
             error: () => {
-                this.snackBar.open('Error al eliminar', 'Cerrar', { duration: 3000 });
+                this.selectedId.set(null);
             },
         });
     }
 
-    getSymbol(tipo: string): string {
-        return getOperadorSymbol(tipo);
+    cancelDelete(): void {
+        this.showConfirmDialog.set(false);
+        this.selectedId.set(null);
     }
 
-    getNombre(tipo: string): string {
-        return getOperacionNombre(tipo);
+    getTipoBadgeClass(tipo: string): string {
+        const map: Record<string, string> = {
+            SUMA: 'bg-green-900/60 text-green-300',
+            RESTA: 'bg-red-900/60 text-red-300',
+            MULTIPLICACION: 'bg-blue-900/60 text-blue-300',
+            DIVISION: 'bg-orange-900/60 text-orange-300',
+        };
+        return map[tipo] || 'bg-gray-700 text-gray-300';
     }
 }
