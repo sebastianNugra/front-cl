@@ -1,29 +1,26 @@
-<div class="detalle-container">
-    @if (cargando()) {
-    <div class="loading">
-        <mat-icon class="spinning">sync</mat-icon>
-    </div>
-    } @else if (operacion(); as op) {
-    <mat-card class="detalle-card" animate.enter="fade-in-up">
-        <mat-card-header>
-            <mat-card-title>Detalle de Operación</mat-card-title>
-            <mat-card-subtitle>{{ op.fecha }}</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
-            <div class="operation-display">
-                <span class="operand">{{ op.valor1 }}</span>
-                <span class="operator">{{ getOperadorSymbol(op.tipo) }}</span>
-                <span class="operand">{{ op.valor2 }}</span>
-                <span class="equals">=</span>
-                <span class="result">{{ op.resultado }}</span>
+<div class="min-h-screen p-6">
+    <div class="max-w-lg mx-auto">
+        <button (click)="volver()"
+            class="text-gray-400 hover:text-white text-sm mb-6 transition-colors font-mono cursor-pointer">
+            ← Volver al historial
+        </button>
+
+        @if (cargando()) {
+            <div class="text-center py-12 text-accent-cyan animate-pulse font-mono">Cargando...</div>
+        } @else if (operacion(); as op) {
+            <div class="bg-gray-900/80 backdrop-blur-xl rounded-2xl border border-white/10 p-6 shadow-2xl">
+                <div class="text-center">
+                    <div class="text-gray-400 font-mono text-sm mb-2">Operación</div>
+                    <div class="text-2xl text-white font-mono mb-6">
+                        {{ op.valor1 }} {{ getOperadorSymbol(op.tipo) }} {{ op.valor2 }}
+                    </div>
+                    <div class="text-gray-400 font-mono text-sm mb-2">Resultado</div>
+                    <div class="text-4xl font-orbitron font-bold text-accent-cyan mb-6">
+                        {{ op.resultado }}
+                    </div>
+                    <div class="text-gray-500 font-mono text-xs">{{ op.fecha }}</div>
+                </div>
             </div>
-        </mat-card-content>
-        <mat-card-actions>
-            <button mat-stroked-button (click)="volver()">
-                <mat-icon>arrow_back</mat-icon>
-                Volver
-            </button>
-        </mat-card-actions>
-    </mat-card>
-    }
+        }
+    </div>
 </div>
