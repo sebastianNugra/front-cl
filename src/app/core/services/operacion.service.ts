@@ -33,7 +33,5 @@ export class OperacionService {
         return this.http.delete<void>(`${this.baseUrl}/${id}`);
     }
 
-    actualizarOperacion(id: number, request: OperacionRequest): Observable<OperacionResponse> {
-        return this.http.put<OperacionResponse>(`${this.baseUrl}/${id}`, request);
-    }
+
 }
