@@ -1,75 +1,41 @@
-<div class="calculator-wrapper">
-    <div class="calculator">
-        <!-- Display -->
-        <div class="display">
-            <div class="expression-row">
-                <input class="operand-input" [value]="valor1()" (input)="onInput('valor1', $event)" placeholder="0"
-                    inputmode="decimal" />
+<div class="min-h-[calc(100vh-56px-3rem)] flex items-center justify-center p-4">
+    <div class="w-full max-w-[380px] bg-gray-900/80 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/10 p-6">
 
-                @if (operacionSeleccionada(); as op) {
-                <span class="operator" animate.enter="fade-in-up">{{ getSymbol(op) }}</span>
-                <input class="operand-input" [value]="valor2()" (input)="onInput('valor2', $event)" placeholder="0"
-                    inputmode="decimal" />
-                }
+        <!-- Display tipo vidrio -->
+        <div
+            class="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-4 mb-5 shadow-[0_0_30px_rgba(6,182,212,0.15)]">
+
+            <!-- Línea superior: operación en curso -->
+            <div class="text-sm text-gray-400 font-mono text-right h-6 truncate select-none">
+                {{ displayExpression() || '\u00A0' }}
             </div>
 
-            @if (resultado() !== null) {
-            <div class="result-row" animate.enter="scale-in">
-                <span class="equals">=</span>
-                <span class="result">{{ resultado() }}</span>
-            </div>
-            }
-        </div>
-
-        <!-- Operation selector -->
-        <div class="operations">
-            @for (op of operaciones; track op.tipo) {
-            <button mat-fab [class.selected]="operacionSeleccionada() === op.tipo"
-                [class.flash]="lastKeyPressed() === op.key" (click)="seleccionarOperacion(op.tipo)"
-                [matTooltip]="op.key" [attr.data-op]="op.tipo" color="primary">
-                <mat-icon>{{ op.icon }}</mat-icon>
-            </button>
-            }
-        </div>
-
-        <!-- Number pad -->
-        <div class="numpad">
-            @for (digit of [1, 2, 3, 4, 5, 6, 7, 8, 9]; track digit) {
-            <button mat-raised-button [class.flash]="lastKeyPressed() === digit.toString()"
-                (click)="agregarDigito(digit.toString())">
-                {{ digit }}
-            </button>
-            }
-            <button mat-raised-button [class.flash]="lastKeyPressed() === '.'" (click)="agregarPunto()">
-                .
-            </button>
-            <button mat-raised-button [class.flash]="lastKeyPressed() === '0'" (click)="agregarDigito('0')">
-                0
-            </button>
-            <button mat-stroked-button class="btn-clear" (click)="borrarUltimo()">
-                <mat-icon>backspace</mat-icon>
-            </button>
-        </div>
-
-        <!-- Actions row -->
-        <div class="actions-row">
-            <button mat-stroked-button class="btn-clear-all" (click)="limpiar()">
-                <mat-icon>delete_forever</mat-icon>
-                Limpiar
-            </button>
-            <button mat-fab extended class="btn-calculate" color="accent" (click)="calcular()" [disabled]="cargando()">
+            <!-- Línea inferior: resultado / valor / error / loading -->
+            <div class="text-4xl font-orbitron font-bold text-white text-right mt-1 truncate select-none">
                 @if (cargando()) {
-                <mat-icon class="spinning">sync</mat-icon>
+                    <span class="text-accent-cyan animate-pulse">...</span>
+                } @else if (errorMsg()) {
+                    <span class="text-red-400 text-lg">{{ errorMsg() }}</span>
+                } @else if (displayResult() !== null) {
+                    {{ displayResult() }}
                 } @else {
-                <mat-icon>arrow_forward</mat-icon>
+                    {{ valor1() || '0' }}
                 }
-                Calcular
-            </button>
+            </div>
+        </div>
+
+        <!-- Teclado grid -->
+        <div class="grid grid-cols-4 gap-3">
+            @for (btn of buttons; track btn.label) {
+                <button [class]="btn.style"
+                    [style.grid-column]="btn.colSpan ? 'span ' + btn.colSpan : null"
+                    class="aspect-square rounded-xl flex items-center justify-center text-lg
+                           transition-all duration-150 active:scale-95 cursor-pointer
+                           shadow-lg hover:shadow-xl"
+                    (click)="onButtonPress(btn)">
+                    {{ btn.label }}
+                </button>
+            }
         </div>
     </div>
-
-    <p class="keyboard-hint">
-        <mat-icon>keyboard</mat-icon>
-        Usa el teclado: números, + - * /, Enter, Esc
-    </p>
 </div>
