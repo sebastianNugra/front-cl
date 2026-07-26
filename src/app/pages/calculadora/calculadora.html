@@ -1,21 +1,20 @@
 <div class="min-h-[calc(100vh-56px-3rem)] flex items-center justify-center p-4">
-    <div class="w-full max-w-[380px] bg-gray-900/80 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/10 p-6">
+    <div class="w-full max-w-[380px] bg-white dark:bg-gray-900/80 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-200 dark:border-white/10 p-6 transition-colors">
 
         <!-- Display tipo vidrio -->
-        <div
-            class="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-4 mb-5 shadow-[0_0_30px_rgba(6,182,212,0.15)]">
+        <div class="bg-gray-100 dark:bg-white/5 backdrop-blur-md border border-gray-200 dark:border-white/10 rounded-xl p-4 mb-5 shadow-[0_0_30px_rgba(6,182,212,0.15)] transition-colors overflow-hidden">
 
             <!-- Línea superior: operación en curso -->
-            <div class="text-sm text-gray-400 font-mono text-right h-6 truncate select-none">
+            <div [class]="expressionFontSize() + ' text-gray-400 dark:text-gray-400 font-mono text-right h-6 truncate select-none'">
                 {{ displayExpression() || '\u00A0' }}
             </div>
 
             <!-- Línea inferior: resultado / valor / error / loading -->
-            <div class="text-4xl font-orbitron font-bold text-white text-right mt-1 truncate select-none">
+            <div [class]="resultFontSize() + ' font-orbitron font-bold text-gray-900 dark:text-white text-right mt-1 truncate select-none'">
                 @if (cargando()) {
                     <span class="text-accent-cyan animate-pulse">...</span>
                 } @else if (errorMsg()) {
-                    <span class="text-red-400 text-lg">{{ errorMsg() }}</span>
+                    <span class="text-red-500 dark:text-red-400 text-lg">{{ errorMsg() }}</span>
                 } @else if (displayResult() !== null) {
                     {{ displayResult() }}
                 } @else {
@@ -29,7 +28,6 @@
             @for (btn of buttons; track btn.label) {
                 <button [class]="btn.style"
                     [style.grid-column]="btn.colSpan ? 'span ' + btn.colSpan : null"
-                    [class]="btn.style"
                     [class.aspect-square]="btn.label !== '0'"
                     [class.h-[72px]]="btn.label === '0'"
                     class="rounded-xl flex items-center justify-center text-lg

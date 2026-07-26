@@ -27,28 +27,28 @@ export class Calculadora {
     errorMsg = signal('');
 
     readonly buttons: ButtonDef[] = [
-        { label: 'AC',  action: 'clear',       value: '',   style: 'bg-red-900/60 hover:bg-red-800/80 text-red-300' },
-        { label: 'CE',  action: 'clearEntry',  value: '',   style: 'bg-orange-900/60 hover:bg-orange-800/80 text-orange-300' },
-        { label: '⌫',  action: 'backspace',   value: '',   style: 'bg-gray-700/60 hover:bg-gray-600/80 text-gray-300' },
+        { label: 'AC',  action: 'clear',       value: '',   style: 'bg-red-100 dark:bg-red-900/60 hover:bg-red-200 dark:hover:bg-red-800/80 text-red-600 dark:text-red-300' },
+        { label: 'CE',  action: 'clearEntry',  value: '',   style: 'bg-orange-100 dark:bg-orange-900/60 hover:bg-orange-200 dark:hover:bg-orange-800/80 text-orange-600 dark:text-orange-300' },
+        { label: '⌫',  action: 'backspace',   value: '',   style: 'bg-gray-200 dark:bg-gray-700/60 hover:bg-gray-300 dark:hover:bg-gray-600/80 text-gray-600 dark:text-gray-300' },
         { label: '÷',   action: 'operator',    value: 'DIVISION', style: 'bg-accent-cyan/80 hover:bg-accent-cyan text-white font-bold' },
 
-        { label: '7',  action: 'digit',  value: '7',  style: 'bg-gray-700/60 hover:bg-gray-600/80 text-white' },
-        { label: '8',  action: 'digit',  value: '8',  style: 'bg-gray-700/60 hover:bg-gray-600/80 text-white' },
-        { label: '9',  action: 'digit',  value: '9',  style: 'bg-gray-700/60 hover:bg-gray-600/80 text-white' },
+        { label: '7',  action: 'digit',  value: '7',  style: 'bg-gray-200 dark:bg-gray-700/60 hover:bg-gray-300 dark:hover:bg-gray-600/80 text-gray-900 dark:text-white' },
+        { label: '8',  action: 'digit',  value: '8',  style: 'bg-gray-200 dark:bg-gray-700/60 hover:bg-gray-300 dark:hover:bg-gray-600/80 text-gray-900 dark:text-white' },
+        { label: '9',  action: 'digit',  value: '9',  style: 'bg-gray-200 dark:bg-gray-700/60 hover:bg-gray-300 dark:hover:bg-gray-600/80 text-gray-900 dark:text-white' },
         { label: '×',  action: 'operator', value: 'MULTIPLICACION', style: 'bg-accent-cyan/80 hover:bg-accent-cyan text-white font-bold' },
 
-        { label: '4',  action: 'digit',  value: '4',  style: 'bg-gray-700/60 hover:bg-gray-600/80 text-white' },
-        { label: '5',  action: 'digit',  value: '5',  style: 'bg-gray-700/60 hover:bg-gray-600/80 text-white' },
-        { label: '6',  action: 'digit',  value: '6',  style: 'bg-gray-700/60 hover:bg-gray-600/80 text-white' },
+        { label: '4',  action: 'digit',  value: '4',  style: 'bg-gray-200 dark:bg-gray-700/60 hover:bg-gray-300 dark:hover:bg-gray-600/80 text-gray-900 dark:text-white' },
+        { label: '5',  action: 'digit',  value: '5',  style: 'bg-gray-200 dark:bg-gray-700/60 hover:bg-gray-300 dark:hover:bg-gray-600/80 text-gray-900 dark:text-white' },
+        { label: '6',  action: 'digit',  value: '6',  style: 'bg-gray-200 dark:bg-gray-700/60 hover:bg-gray-300 dark:hover:bg-gray-600/80 text-gray-900 dark:text-white' },
         { label: '-',  action: 'operator', value: 'RESTA', style: 'bg-accent-cyan/80 hover:bg-accent-cyan text-white font-bold' },
 
-        { label: '1',  action: 'digit',  value: '1',  style: 'bg-gray-700/60 hover:bg-gray-600/80 text-white' },
-        { label: '2',  action: 'digit',  value: '2',  style: 'bg-gray-700/60 hover:bg-gray-600/80 text-white' },
-        { label: '3',  action: 'digit',  value: '3',  style: 'bg-gray-700/60 hover:bg-gray-600/80 text-white' },
+        { label: '1',  action: 'digit',  value: '1',  style: 'bg-gray-200 dark:bg-gray-700/60 hover:bg-gray-300 dark:hover:bg-gray-600/80 text-gray-900 dark:text-white' },
+        { label: '2',  action: 'digit',  value: '2',  style: 'bg-gray-200 dark:bg-gray-700/60 hover:bg-gray-300 dark:hover:bg-gray-600/80 text-gray-900 dark:text-white' },
+        { label: '3',  action: 'digit',  value: '3',  style: 'bg-gray-200 dark:bg-gray-700/60 hover:bg-gray-300 dark:hover:bg-gray-600/80 text-gray-900 dark:text-white' },
         { label: '+',  action: 'operator', value: 'SUMA', style: 'bg-accent-cyan/80 hover:bg-accent-cyan text-white font-bold' },
 
-        { label: '0',  action: 'digit',  value: '0',  style: 'bg-gray-700/60 hover:bg-gray-600/80 text-white', colSpan: 2 },
-        { label: '.',  action: 'decimal', value: '.', style: 'bg-gray-700/60 hover:bg-gray-600/80 text-white' },
+        { label: '0',  action: 'digit',  value: '0',  style: 'bg-gray-200 dark:bg-gray-700/60 hover:bg-gray-300 dark:hover:bg-gray-600/80 text-gray-900 dark:text-white', colSpan: 2 },
+        { label: '.',  action: 'decimal', value: '.', style: 'bg-gray-200 dark:bg-gray-700/60 hover:bg-gray-300 dark:hover:bg-gray-600/80 text-gray-900 dark:text-white' },
         { label: '=',  action: 'equals',  value: '',   style: 'bg-accent-purple/80 hover:bg-accent-purple text-white font-bold' },
     ];
 
@@ -67,6 +67,23 @@ export class Calculadora {
         if (r === null) return null;
         if (Number.isInteger(r)) return String(r);
         return parseFloat(r.toFixed(8)).toString();
+    });
+
+    expressionFontSize = computed(() => {
+        const len = this.displayExpression().length;
+        if (len <= 12) return 'text-sm';
+        if (len <= 18) return 'text-xs';
+        return 'text-[10px]';
+    });
+
+    resultFontSize = computed(() => {
+        const val = this.displayResult() ?? this.valor1() ?? '0';
+        const len = val.length;
+        if (len <= 8) return 'text-4xl';
+        if (len <= 12) return 'text-3xl';
+        if (len <= 16) return 'text-2xl';
+        if (len <= 22) return 'text-xl';
+        return 'text-lg';
     });
 
     onButtonPress(button: ButtonDef): void {
