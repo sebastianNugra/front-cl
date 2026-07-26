@@ -1,24 +1,24 @@
 <div class="min-h-screen p-6">
     <div class="max-w-lg mx-auto">
         <button (click)="volver()"
-            class="text-gray-400 hover:text-white text-sm mb-6 transition-colors font-mono cursor-pointer">
+            class="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white text-sm mb-6 transition-colors font-mono cursor-pointer">
             ← Volver al historial
         </button>
 
         @if (cargando()) {
             <div class="text-center py-12 text-accent-cyan animate-pulse font-mono">Cargando...</div>
         } @else if (operacion(); as op) {
-            <div class="bg-gray-900/80 backdrop-blur-xl rounded-2xl border border-white/10 p-6 shadow-2xl">
+            <div class="bg-white dark:bg-gray-900/80 backdrop-blur-xl rounded-2xl border border-gray-200 dark:border-white/10 p-6 shadow-2xl transition-colors">
                 <div class="text-center">
-                    <div class="text-gray-400 font-mono text-sm mb-2">Operación</div>
-                    <div class="text-2xl text-white font-mono mb-6">
+                    <div class="text-gray-400 dark:text-gray-400 font-mono text-sm mb-2">Operación</div>
+                    <div class="text-2xl text-gray-900 dark:text-white font-mono mb-6">
                         {{ op.valor1 }} {{ getOperadorSymbol(op.tipo) }} {{ op.valor2 }}
                     </div>
-                    <div class="text-gray-400 font-mono text-sm mb-2">Resultado</div>
+                    <div class="text-gray-400 dark:text-gray-400 font-mono text-sm mb-2">Resultado</div>
                     <div class="text-4xl font-orbitron font-bold text-accent-cyan mb-6">
                         {{ op.resultado }}
                     </div>
-                    <div class="text-gray-500 font-mono text-xs">{{ op.fecha }}</div>
+                    <div class="text-gray-400 dark:text-gray-500 font-mono text-xs">{{ op.fecha }}</div>
                 </div>
             </div>
         }
