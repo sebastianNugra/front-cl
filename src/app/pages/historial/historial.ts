@@ -35,7 +35,7 @@ export class Historial implements OnInit {
         this.cargando.set(true);
         this.operacionService.getHistorial(this.pageIndex(), this.pageSize()).subscribe({
             next: (res) => {
-                this.data.set(res.content);
+                this.data.set(res.content.reverse());
                 this.totalElements.set(res.totalElements);
                 this.totalPages.set(res.totalPages);
                 this.cargando.set(false);
