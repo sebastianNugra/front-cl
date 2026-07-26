@@ -29,7 +29,10 @@
             @for (btn of buttons; track btn.label) {
                 <button [class]="btn.style"
                     [style.grid-column]="btn.colSpan ? 'span ' + btn.colSpan : null"
-                    class="aspect-square rounded-xl flex items-center justify-center text-lg
+                    [class]="btn.style"
+                    [class.aspect-square]="btn.label !== '0'"
+                    [class.h-[72px]]="btn.label === '0'"
+                    class="rounded-xl flex items-center justify-center text-lg
                            transition-all duration-150 active:scale-95 cursor-pointer
                            shadow-lg hover:shadow-xl"
                     (click)="onButtonPress(btn)">
