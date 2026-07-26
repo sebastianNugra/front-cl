@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-accent-cyan: #06b6d4;
   --color-accent-purple: #a855f7;
@@ -12,12 +14,18 @@
 html, body {
   height: 100%;
   margin: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 body {
+  font-family: 'Roboto Mono', monospace;
+  background: #f8fafc;
+  color: #1e293b;
+}
+
+html.dark body {
   background: linear-gradient(135deg, #030712 0%, #111827 50%, #030712 100%);
   color: #f9fafb;
-  font-family: 'Roboto Mono', monospace;
 }
 
 html.dark {
@@ -36,8 +44,15 @@ html:not(.dark) {
   background: transparent;
 }
 
-::-webkit-scrollbar-thumb {
+html.dark ::-webkit-scrollbar-thumb {
   background: #374151;
+}
+
+html:not(.dark) ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+}
+
+::-webkit-scrollbar-thumb {
   border-radius: 4px;
 }
 
